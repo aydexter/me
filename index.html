@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who is dexter?</title>
+    
+            <meta property="og:title" content="hi, im dexter" />
+            <meta property="og:description" content="im  an interesting person, i dont know what im doing" />
+            <meta property="og:url" content="https://dexter.pages.dev" />
+            <meta property="og:type" content="website" />
+    
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:title" content="about dexter">
+            <meta name="twitter:description" content="yay dexter">
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --light-blue: #0000ff;
+            --soft-blue: #0000f0;
+            --accent-blue: #ff0000;
+            --text-dark: #ff0000;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-blue);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            gap: 15px;
+        }
+        
+        .navbar h4 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .nav-btn:hover {
+            background: var(--soft-blue);
+        }
+        
+        .nav-btn.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: white;
+            color: var(--accent-blue);
+            border: 2px solid var(--accent-blue);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            line-height: 1.5;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            box-sizing: border-box;
+            min-width: 180px;
+        }
+
+        .btn:hover {
+            background: var(--accent-blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .page-container {
+            position: relative;
+            height: calc(100vh - 60px);
+            width: 100%;
+            overflow: hidden;
+            margin-top: 60px;
+        }
+        
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s ease;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        
+        .page.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin: 25px 0 15px;
+        }
+        
+        p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        
+        .search-container {
+            margin: 20px 0;
+            width: 80%;
+            max-width: 500px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        #gameSearch {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid var(--accent-blue);
+            border-radius: 25px;
+            font-family: 'Poppins';
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        #gameSearch:focus {
+            border-color: var(--text-dark);
+            box-shadow: 0 0 0 2px var(--soft-blue);
+        }
+        
+        .filter-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .filter-button {
+            padding: 10px 15px;
+            background: white;
+            color: var(--accent-blue);
+            border: 2px solid var(--accent-blue);
+            border-radius: 25px;
+            font-family: 'Poppins';
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .filter-button:hover {
+            background: var(--soft-blue);
+        }
+        
+        .filter-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 10px;
+            right: 0;
+            overflow: hidden;
+        }
+        
+        .filter-dropdown-content a {
+            color: var(--text-dark);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        
+        .filter-dropdown-content a:hover {
+            background-color: var(--soft-blue);
+            color: var(--text-dark);
+        }
+        
+        .filter-dropdown:hover .filter-dropdown-content {
+            display: block;
+        }
+
+        .image img {
+            max-width: 60%;
+            height: auto;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+                padding: 10px;
+            }
+            
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .btn {
+                min-width: 100px;
+                padding: 10px 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h4>CBBM For Roblox</h4>
+        <a href="#" class="nav-btn active" onclick="showPage('home', event)">Home</a>
+        <a href="/install" class="nav-btn" onclick="showPage('install', event)">Who Am I</a>
+        <a href="/credits" class="nav-btn" onclick="showPage('credits', event)">Credits</a>
+    </nav>
+
+    <div class="page-container">
+        <div id="home" class="page active">
+            <h1>Who is Dexter?</h1>
+            <p>I, am a weirdo who loves to exploit in roblox. I also wish to learn how to code one day.</p>
+            <button class="btn" onclick="showPage('install', event)">learn more about this idiot (me, of course)</button>
+        </div>
+
+        <div id="pxaz" class="page">
+            <button class="btn" onclick="window.open('https://example.com')">testsite</button>                
+            <button class="btn" onclick="smartCopy('copy and paste')">copyandpastebutton</button>
+            <button class="btn" onclick="window.location.href='urlhere'">uhdik</button>
+        </div>
+
+        <div id="install" class="page">
+            <h1>I am dexter, someone who you probably know if you clicked this link</h1>
+            <p>Here are some facts!</p>
+            <p>im extremely stupid and I cant solve problems for shit</p></p>
+            <p>Im pretty known, atleast i think. im 14 and still an idiot.</p>
+            <p>im online so much, you wont see me off of discord vro</p>
+            <h1>go to credits for my socials and then davids socials, he made the website bro!!</h1>
+            <button class="btn" onclick="window.location.href='https://www.dropbox.com/scl/fi/67zn764e5dgf5rszkto6h/CB-BM.zip?rlkey=0ye5gzw2jjih7ui60i8661tjk&e=1&st=9c0d8c6g&dl=1'">Download CBBM Config for Bedwars</button>
+            <button class="btn" onclick="window.open('https://discord.com/users/1216584029621715013')">My Discord account!!</button>                
+        </div>
+        
+        <div id="credits" class="page">
+            <div style="max-width: 600px;">
+                <h1>Credits</h1>
+                <p>Website developed by David (awesome guy btw)</p>
+                <p>Nothing developed by Dexter (awesome guy aswell (self glaze))</p>
+                <p>And dont forget, all of the friends we made along the way. (i dont know what im typing)</p>
+                <button class="btn" onclick="window.open('https://discord.com/users/1216584029621715013', '_blank')">My Discord account</button>
+                <button class="btn" onclick="window.open('https://github.com/aydexter', '_blank')">My GitHub</button>
+                <button class="btn" onclick="window.open('https://github.com/mrdavidss-vgg', '_blank')">David's GitHub</button>
+                <button class="btn" onclick="window.open('https://discord.com/users/959880218263310406', '_blank')">David's Discord (user)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId, event) {
+            if (event) event.preventDefault();
+            
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update active nav button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Find the clicked button and make it active
+            if (event && event.target.classList.contains('nav-btn')) {
+                event.target.classList.add('active');
+            }
+        }
+
+        const hiddenPages = ["installation"];
+
+        let copyTimeout;
+        let currentAlert;
+
+        function smartCopy(text) {
+            if (copyTimeout) clearTimeout(copyTimeout);
+            if (currentAlert) document.body.removeChild(currentAlert);
+
+            currentAlert = document.createElement('div');
+            currentAlert.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: #b3d4ff;
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    z-index: 9999;
+                    display: flex;
+                    align-items: center;
+                ">
+                    <span>Copied to clipboard!</span>
+                    <button style="
+                        margin-left: 15px;
+                        background: #5094fc;
+                        color: white;
+                        border: none;
+                        padding: 3px 8px;
+                        border-radius: 3px;
+                        cursor: pointer;
+                    ">OK</button>
+                </div>
+            `;
+
+            const okButton = currentAlert.querySelector('button');
+            okButton.onclick = () => {
+                clearTimeout(copyTimeout);
+                document.body.removeChild(currentAlert);
+                currentAlert = null;
+            };
+
+            document.body.appendChild(currentAlert);
+
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            copyTimeout = setTimeout(() => {
+                if (currentAlert) {
+                    document.body.removeChild(currentAlert);
+                    currentAlert = null;
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
